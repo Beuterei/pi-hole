@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+    pi-hole:
+        container_name: piHoleProd
+
+        ports:
+            - "53:53/tcp"
+            - "53:53/udp"
+            - "67:67/udp"
+            - "80:80/tcp"
+            - "443:443/tcp"
+
+        environment:
+            WEBPASSWORD: ${PH_WEBPASSWORD:?Missing environment variable see readme}

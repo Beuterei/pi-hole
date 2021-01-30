@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+    pi-hole:
+        image: pihole/pihole:v5.6
+
+        networks:
+            - default
+
+        ports:
+            - 53/tcp
+            - 53/udp
+            - 67/udp
+            - 80/tcp
+            - 443/tcp
+
+        healthcheck:
+            test: ["CMD-SHELL", "curl --fail http://localhost/admin || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+        restart: always
+
+        environment:
+            TZ: ${PH_TZ-Europe/Berlin}
+            ADMIN_EMAIL: ${PH_ADMIN_EMAIL:?Missing environment variable see readme}
+            DNS1: ${PH_DNS1-8.8.8.8}
+            DNS2: ${PH_DNS2-8.8.4.4}
+            DNSSEC: ${PH_DNSSEC-false}
+            DNS_BOGUS_PRIV: ${PH_DNS_BOGUS_PRIV-true}
+            DNS_FQDN_REQUIRED: ${PH_DNS_FQDN_REQUIRED-true}
+            REV_SERVER: ${PH_REV_SERVER-false}
+            REV_SERVER_DOMAIN: ${PH_REV_SERVER_DOMAIN-}
+            REV_SERVER_TARGET: ${PH_REV_SERVER_TARGET-}
+            REV_SERVER_CIDR: ${PH_REV_SERVER_CIDR-}
+            ServerIP: ${PH_SERVER_IP-}
+            ServerIPv6: ${PH_SERVER_IPV6-}
+            VIRTUAL_HOST: ${PH_VIRTUAL_HOST-}
+            IPv6: ${PH_IPV6-true}
+            INTERFACE: ${PH_INTERFACE-}
+            DNSMASQ_LISTENING: ${PH_DNSMASQ_LISTENING-}
+            WEB_PORT: ${PH_WEB_PORT-}
+            DNSMASQ_USER: ${PH_DNSMASQ_USER-root}
+            TEMPERATUREUNIT: ${PH_TEMPERATUREUNIT-c}
+            WEBUIBOXEDLAYOUT: ${PH_WEBUIBOXEDLAYOUT-boxed}
+            SKIPGRAVITYONBOOT: ${PH_SKIPGRAVITYONBOOT-}
+
+        volumes:
+            - piHoleData:/etc/pihole/'
+            - './dnsmasq.d/:/etc/dnsmasq.d/'
+
+        cap_add:
+            - NET_ADMIN
+
+volumes:
+    piHoleData:
+        driver: local
