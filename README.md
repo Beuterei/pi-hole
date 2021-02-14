@@ -3,7 +3,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 
-> :warning: The setup is very experimental.
+> :warning: The setup is very very very experimental and not stable at all.
 
 <!-- PROJECT LOGO -->
 <br />

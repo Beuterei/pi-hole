@@ -1,7 +1,8 @@
 version: "3.7"
 services:
     pi-hole:
-        image: pihole/pihole:v5.6
+        build:
+            context: .
 
         networks:
             - default
@@ -47,11 +48,13 @@ services:
 
         volumes:
             - piHoleData:/etc/pihole/'
-            - './dnsmasq.d/:/etc/dnsmasq.d/'
+            - piHoleDnsmasq:/etc/dnsmasq.d/
 
         cap_add:
             - NET_ADMIN
 
 volumes:
     piHoleData:
+        driver: local
+    piHoleDnsmasq:
         driver: local
